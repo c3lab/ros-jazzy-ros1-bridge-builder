@@ -210,7 +210,13 @@ services_2_to_1:
     ros1_service: /{ros1_ns}/gbplanner/get_frontiers
     type: planner_msgs/planner_get_frontiers
 
+  # ROS 2 client side: planner_msgs/srv/PlannerValidateFrontiers. Advertised by
+  # the D-GHOST planner build, not by the gbplanner3 on this branch: until the
+  # robot runs one that has it, the services bridge prints "no conversion for
+  # type" for this entry and skips it, which is non-fatal (factory.hpp returns
+  # null, parameter_bridge logs and moves to the next entry).
   - service: /{ns}/gbplanner/validate_frontiers
+    ros1_service: /{ros1_ns}/gbplanner/validate_frontiers
     type: planner_msgs/planner_validate_frontiers
 
   # ROS 2 client side: planner_msgs/srv/PlannerGetTargetCosts
