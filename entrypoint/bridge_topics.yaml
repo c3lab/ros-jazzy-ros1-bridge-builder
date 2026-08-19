@@ -183,6 +183,9 @@ services_2_to_1:
   - service: /{ns}/gbplanner/get_frontiers
     type: planner_msgs/planner_get_frontiers
 
+  - service: /{ns}/gbplanner/validate_frontiers
+    type: planner_msgs/planner_validate_frontiers
+
   # ROS 2 client side: planner_msgs/srv/PlannerGetTargetCosts
   - service: /{ns}/gbplanner/get_target_costs
     type: planner_msgs/planner_get_target_costs
