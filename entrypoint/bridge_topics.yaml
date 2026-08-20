@@ -136,6 +136,9 @@ topics:
   # custom_msgs workspaces and rebuilding the image. Use
   # gbplanner_node/surface_pointcloud (sensor_msgs/msg/PointCloud2) instead if
   # the map itself is wanted on the ROS 2 side -- at the bandwidth that implies.
+  - topic: /{ns}/gbplanner_node/surface_pointcloud
+    type: sensor_msgs/msg/PointCloud2
+    queue_size: 2
 
 # Every service below is hosted natively on the ROS 1 side -- the first four
 # by /{ns}/pci_general_ros_node, the two gbplanner ones by the gbplanner node
