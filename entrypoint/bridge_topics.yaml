@@ -140,6 +140,10 @@ topics:
     type: sensor_msgs/msg/PointCloud2
     queue_size: 2
 
+  - topic: /{ns}/gbplanner/explored_voxels
+    type: sensor_msgs/msg/PointCloud2
+    queue_size: 2
+
 # Every service below is hosted natively on the ROS 1 side -- the first four
 # by /{ns}/pci_general_ros_node, the two gbplanner ones by the gbplanner node
 # (confirmed via `rosservice info`), so they
@@ -192,6 +196,9 @@ services_2_to_1:
   # ROS 2 client side: planner_msgs/srv/PlannerGetTargetCosts
   - service: /{ns}/gbplanner/get_target_costs
     type: planner_msgs/planner_get_target_costs
+
+  - service: /{ns}/gbplanner/get_explored_volume
+    type: std_srvs/Trigger
 
 # services_1_to_2:
 #   - service: /service_name
