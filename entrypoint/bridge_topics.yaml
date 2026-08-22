@@ -63,6 +63,40 @@ topics:
     when: sim_time
 
   # ---------------------------------------------------------------------------
+  # Robot state: ROS1 -> ROS2.
+  #
+  # The pose estimate the planner itself runs on, for consumers on the ROS 2
+  # side (D-GHOST's gatekeeper and task nodes want a nav_msgs/Odometry).
+  #
+  # ros1_topic has no namespace on purpose: msf lives at the root of the
+  # robot's master, outside /anymal, so {ros1_ns} does not apply here - only
+  # the ROS 2 side gets the per-robot namespace.
+  #
+  # The frame ids inside the message stay bare ("world" / "body"): the bridge
+  # copies payloads verbatim and only tf_remapper_cpp rewrites frame ids, and
+  # it only touches the TF topics. So a ROS 2 consumer that looks this frame up
+  # in the fleet TF tree, where it is robot0/world, will not find it.
+  #
+  # Bidirectional like every topic bridge: anything publishing
+  # /{ns}/odometry on the ROS 2 side lands on the robot's /msf_core/odometry
+  # and is seen by every consumer of the state estimate, the planner included.
+  # Nothing does today, but that is the risk this entry carries.
+  - topic: /{ns}/odometry
+    ros1_topic: /msf_core/odometry
+    type: nav_msgs/msg/Odometry
+    queue_size: 10
+
+  # The one topic that really flows ROS 2 -> ROS 1: external navigation goals.
+  # gbplanner.launch puts both the PCI (go_to_waypoint) and gbplanner_node
+  # (RRG bias) on the ROS 1 side of it, and the ROS 2 name matches what
+  # sim_gbplanner.launch exposes, so a fleet-side goal publisher does not care
+  # whether it is talking to the sim or to the robot.
+  - topic: /{ns}/move_base_simple/goal
+    ros1_topic: /{ros1_ns}/move_base_simple/goal
+    type: geometry_msgs/msg/PoseStamped
+    queue_size: 10
+
+  # ---------------------------------------------------------------------------
   # Planner state and visualisation: ROS1 -> ROS2.
   #
   # Everything gbplanner draws lives on the robot's own master, so without
