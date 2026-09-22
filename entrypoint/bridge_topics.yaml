@@ -118,6 +118,11 @@ topics:
     type: geometry_msgs/msg/PointStamped
     queue_size: 10
 
+  # /{ns}/gbplanner/explored_voxels: ROS1 -> ROS2 (free-space voxel cloud)
+  - topic: /{ns}/gbplanner/explored_voxels
+    type: sensor_msgs/msg/PointCloud2
+    queue_size: 1
+
   # Left out on purpose, all visualization_msgs/msg/MarkerArray -- uncomment
   # what you need, no rebuild required:
   #
@@ -189,6 +194,9 @@ services_2_to_1:
   # ROS 2 client side: planner_msgs/srv/PlannerGetTargetCosts
   - service: /{ns}/gbplanner/get_target_costs
     type: planner_msgs/planner_get_target_costs
+
+  - service: /{ns}/gbplanner/get_explored_volume
+    type: std_srvs/Trigger
 
 # services_1_to_2:
 #   - service: /service_name
